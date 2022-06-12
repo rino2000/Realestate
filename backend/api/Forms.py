@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Broker
+from .models import Broker, House
 
 
 class BrokerForm(forms.ModelForm):
@@ -14,3 +14,10 @@ class BrokerForm(forms.ModelForm):
         if commit:
             broker.save()
         return broker
+
+
+class HouseForm(forms.ModelForm):
+    class Meta:
+        model = House
+        fields = ['title', 'price', 'plot', 'bathrooms',
+                  'bedrooms', 'living_space', 'description']

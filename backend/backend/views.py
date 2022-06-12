@@ -1,18 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.views import LoginView, LogoutView
+from django.views.generic.edit import FormView
 
 from api.models import House, Broker
-from api.Forms import BrokerForm
+from api.Forms import BrokerForm, HouseForm
 
 
 class Login(LoginView):
     template_name = 'login.html'
 
+
 class Logout(LogoutView):
     next_page = 'home'
+
 
 class Data(ListView):
     model = House
@@ -23,17 +26,34 @@ class Data(ListView):
         return context
 
 
-class CreateHouse(CreateView):
-    model = House
+class CreateHouse(View):
     template_name = 'create_house.html'
-    # require image field
-    fields = ['title', 'price', 'plot', 'bathrooms',
-              'bedrooms', 'living_space', 'description']
 
-    # def get_form_kwargs(self, **kwargs):
-    #     house_id = super().get_context_data(**kwargs)
-    #     house_id = kwargs.get('id')
-    #     return house_id
+    def get(self, request):
+        form = HouseForm
+        return render(request, 'create_house.html', context={'form': form})
+
+    def post(self, request):
+
+        if request.method == 'POST':
+
+            form = HouseForm(request.POST)
+
+            if form.is_valid():
+
+                house = House.objects.create(
+                    title=form.cleaned_data['title'],
+                    price=form.cleaned_data['price'],
+                    plot=form.cleaned_data['plot'],
+                    bathrooms=form.cleaned_data['bathrooms'],
+                    bedrooms=form.cleaned_data['bedrooms'],
+                    living_space=form.cleaned_data['living_space'],
+                    description=form.cleaned_data['description'],
+                )
+                house.broker_id = self.request.user.id
+                house.save()
+
+                return redirect('home')
 
 
 class CreateBroker(CreateView):
