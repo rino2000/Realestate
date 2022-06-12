@@ -2,9 +2,9 @@
 
 {% block content %}
 
-<form method="post">
+<form method="post" action="{% url 'login' %}">
     {% csrf_token %}
     {{ form }}
-    <button type="submit">Create Broker</button>
+    <button type="submit">Login</button>
 </form>
 {% endblock content %}

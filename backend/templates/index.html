@@ -23,16 +23,27 @@
         <a class="nav-link active" aria-current="page" href="/">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="create/house">Create House</a>
+        <a class="nav-link" href="/create/house">Create House</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="login/">Login</a>
+        <a class="nav-link" href="/login/">Login</a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href="register/">Register</a>
+        <a class="nav-link" href="/register/">Register</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">Logout</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/create/broker/">Create Broker</a>
       </li>
     </ul>
+    {% if user.is_authenticated %}
+    <h1>User is authenticated</h1>
+    {% else %}
+    <h1>User is not authenticated</h1>
+    {% endif %}
     <div class="container">
       <div class="align-items-center">
         <ul>
@@ -84,10 +95,11 @@
             </div>
           </div>
           {% empty %}
-          <li>No houses yet.</li>
+          <h1>No houses yet.</h1>
           {% endfor %}
         </ul>
       </div>
     </div>
+    {% block content %} {% endblock content %}
   </body>
 </html>
