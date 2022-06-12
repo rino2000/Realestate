@@ -35,68 +35,17 @@
       <li class="nav-item">
         <a class="nav-link" href="/create/broker/">Create Broker</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/dashboard">Dashboard</a>
+      </li>
     </ul>
-    {% if user.is_authenticated %}
-    <h1>User is authenticated</h1>
-    {% else %}
-    <h1>User is not authenticated</h1>
-    {% endif %}
-    <div class="container">
-      <div class="align-items-center">
-        <ul>
-          {% if object_list|length > 1 %}
-          <h3>{{ object_list|length }} Ergebnisse</h3>
-          {% elif object_list|length <= 1 %}
-          <h3>{{ object_list|length }} Ergebniss</h3>
-          {% endif %} {% for house in object_list %}
-          <div class="container">
-            <div class="align-items-center">
-              <div
-                class="container border border-2 border-primary mb-4 mt-3 rounded-3 shadow-lg p-3"
-              >
-                <div class="row">
-                  <div class="col">
-                    <img
-                      src="{{ house.image }}"
-                      class="rounded img-fluid"
-                      alt="house"
-                    />
-                  </div>
-                  <div class="col">
-                    <h4>{{ house.title }}</h4>
-                    <h4 class="text-primary">{{ house.price }} €</h4>
-                    <p class="fw-bold">
-                      <img
-                        src="https://img.icons8.com/ios-glyphs/30/000000/ruler-combined.png"
-                      />
-                      {{ house.plot }} ㎡
-                    </p>
-                    <p class="fw-bold">
-                      <img
-                        src="https://img.icons8.com/ios-glyphs/30/000000/shower.png"
-                      />
-                      {{ house.bathrooms }}
-                    </p>
-                    <p class="fw-bold">
-                      <img
-                        src="https://img.icons8.com/ios-filled/30/000000/bed.png"
-                      />
-                      {{ house.bedrooms }}
-                    </p>
-                    <p class="fw-light">
-                      {{ house.description|truncatechars:200 }}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {% empty %}
-          <h1>No houses yet.</h1>
-          {% endfor %}
-        </ul>
-      </div>
+    <div class="container center">
+      {% if user.is_authenticated %}
+      <h1>User is authenticated</h1>
+      {% else %}
+      <h1>User is not authenticated</h1>
+      {% endif %}
+      <div class="container">{% block content %} {% endblock content %}</div>
     </div>
-    {% block content %} {% endblock content %}
   </body>
 </html>

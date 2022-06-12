@@ -62,6 +62,10 @@ class CreateBroker(CreateView):
     template_name = 'create_broker.html'
 
 
-class Dashboard(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'dashboard.html')
+class Dashboard(ListView):
+    model = House
+    template_name = 'dashboard.html'
+
+    def get_queryset(self):
+        context = House.objects.filter(broker_id=self.request.user.id).order_by('-created')
+        return context
