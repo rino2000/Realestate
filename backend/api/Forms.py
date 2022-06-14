@@ -20,4 +20,8 @@ class HouseForm(forms.ModelForm):
     class Meta:
         model = House
         fields = ['title', 'price', 'plot', 'bathrooms',
-                  'bedrooms', 'living_space', 'description']
+                  'bedrooms', 'living_space', 'plot_size', 'city', 'country', 'description']
+
+
+class SearchForm(forms.Form):
+    search = forms.CharField(label='Search for a city', max_length=50)

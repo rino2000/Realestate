@@ -1,10 +1,14 @@
 {% extends 'index.html' %}
+{% load bootstrap5 %}
+
 
 {% block content %}
 
 <form method="post">
     {% csrf_token %}
-    {{ form }}
-    <button type="submit">Create Broker</button>
+    {% bootstrap_form form %}
+    {% buttons %}
+        <button type="submit" class="btn btn-primary">Create Broker</button>
+    {% endbuttons %}
 </form>
 {% endblock content %}

@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<h1>{{ model|length }} Hauser insgesammt</h1>
+
+
+{% for house in model %}
+    <hr>
+    <p>Title = {{ house.title}}</p>
+    <p>Price = {{ house.price}}</p>
+    <p>Plot = {{ house.plot}}</p>
+    <p>Bathrooms = {{ house.bathrooms}}</p>
+    <p>Bedrooms = {{ house.bedrooms}}</p>
+    <p>Living Space = {{ house.living_space}}</p>
+    <p>City = {{ house.city}}</p>
+    <p> Country = {{ house.country}}</p>
+    <p>Description = {{ house.description}}</p>
+    {% empty %}
+        <h1>No houses found for "{{ request.path|slice:"8:" }}"</h1>
+{% endfor %}
+
+{% endblock content %}

@@ -1,0 +1,26 @@
+<ul class="nav justify-content-center mt-3">
+  {% if user.is_authenticated %}
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="/">Home</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/create/house">Create House</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/logout">Logout</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/dashboard">Dashboard</a>
+  </li>
+  {% else %}
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="/">Home</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/login/">Login</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/create/broker/">Create Broker</a>
+  </li>
+  {% endif %}
+</ul>

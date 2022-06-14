@@ -50,9 +50,12 @@ class House(models.Model):
     plot = models.CharField(max_length=10)
     bathrooms = models.IntegerField()
     bedrooms = models.IntegerField()
-    living_space = models.CharField(max_length=10)
+    living_space = models.CharField(max_length=15)
+    plot_size = models.CharField(max_length=15)
     description = models.TextField(max_length=1500)
     image = models.ImageField(max_length=1000)
+    city = models.CharField(max_length=50)
+    country = models.CharField(max_length=50)
     created = models.DateTimeField(auto_now_add=True)
     broker = models.ForeignKey(Broker, null=True, on_delete=models.CASCADE)
 
