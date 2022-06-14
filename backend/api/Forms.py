@@ -8,6 +8,7 @@ class BrokerForm(forms.ModelForm):
         model = Broker
         fields = ['name', 'email', 'password']
 
+    #hash password before store in DB
     def save(self, commit=True):
         broker = super().save(commit=False)
         broker.set_password(self.cleaned_data['password'])

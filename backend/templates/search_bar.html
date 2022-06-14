@@ -1,6 +1,7 @@
 {% load bootstrap5 %}
 {% block content %}
 
+<div class="container center">
 <form method="post">
   {% csrf_token %}
   <input type="text" name="search" id="search" placeholder="Search for city">
@@ -8,5 +9,6 @@
   <button type="submit" class="btn btn-primary">Search</button>
   {% endbuttons %}
 </form>
+</div>
 
 {% endblock %}

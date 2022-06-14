@@ -2,7 +2,6 @@
 
 {% block content %}
 
-
 <div class="container center">
 {% if object_list|length > 1 %}
           <h3>Total Houses {{ object_list|length }}</h3>
@@ -22,6 +21,7 @@
             <th scope="col">Bedrooms</th>
             <th scope="col">Livinspace</th>
             <th scope="col">Description</th>
+            <th scope="col">Plot Size</th>
             <th scope="col">Uploaded at</th>
         </tr>
     </thead>
@@ -34,10 +34,15 @@
             <td>{{ house.bedrooms }}</td>
             <td>{{ house.living_space }}</td>
             <td>{{ house.description }}</td>
-            <td>{{ house.created }}</td>
+            <td>{{ house.plot_size }}</td>
+            <td>{{ house.created|date:"d F Y, H:i" }}</td>
         </tr>
     </tbody>
 </table>
+{% empty %}
+        <h1>No houses founded in your portfolio</h1>
+        <p>List a house now <a href="{% url 'createhouse' %}">list now</a></p>
 {% endfor %}
-{% endblock content %}
+    <h1>Total house value = {{ value|floatformat:2 }} €</h1>
 </div>
+{% endblock content %}

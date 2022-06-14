@@ -4,6 +4,7 @@
 
 {% block content %}
 
+<div class="container center">
 <form method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
@@ -11,4 +12,5 @@
         <button type="submit" class="btn btn-primary">Create House</button>
     {% endbuttons %}
 </form>
+</div>
 {% endblock content %}

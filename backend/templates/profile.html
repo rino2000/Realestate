@@ -1,0 +1,12 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<h1>User Profile</h1>
+<p>
+    {% for p in object_list %}
+        <p>Name = {{ p.name }} </p>
+        <p>Email = {{ p.email }}</p>
+    {% endfor %}
+</p>
+{% endblock content %}

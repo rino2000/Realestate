@@ -1,8 +1,14 @@
 from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.views import LoginView, LogoutView
+from django.views.generic.edit import DeleteView
+from django.contrib import messages
+from django.db.models import Sum
+from django.db.models import FloatField
+from django.db.models.functions import Cast
 
 from api.models import House, Broker
 from api.Forms import BrokerForm, HouseForm
@@ -25,6 +31,11 @@ class Search(View):
 
 class Login(LoginView):
     template_name = 'login.html'
+    success_message = "Successfully Logged in"
+
+    def post(self, request, *args, **kwargs):
+        messages.success(self.request, self.success_message, 'success')
+        return super(Login, self).post(request, *args, **kwargs)
 
 
 class Logout(LogoutView):
@@ -37,12 +48,10 @@ class Data(View):
         return render(request, 'index.html', context={'form': form})
 
     def post(self, request, *args, **kwargs):
-
         if request.method == 'POST':
             form = SearchForm(request.POST)
             if form.is_valid():
                 search = form.cleaned_data['search']
-                print(search)
                 return redirect('search', q=search)
 
 
@@ -50,14 +59,13 @@ class CreateHouse(View):
     template_name = 'create_house.html'
 
     def get(self, request):
-        form = HouseForm
+        form = HouseForm()
         return render(request, 'create_house.html', context={'form': form})
 
     def post(self, request):
         if request.method == 'POST':
             form = HouseForm(request.POST)
             if form.is_valid():
-
                 house = House.objects.create(
                     title=form.cleaned_data['title'],
                     price=form.cleaned_data['price'],
@@ -80,11 +88,33 @@ class CreateBroker(CreateView):
     template_name = 'create_broker.html'
 
 
-class Dashboard(ListView):
-    model = House
-    template_name = 'dashboard.html'
+class Dashboard(View):
+
+    def get(self, request, *args, **kwargs):
+        #get all houses from current logged broker
+        houses = House.objects.filter(broker_id=self.request.user.id)
+
+        #sum price of all houses from current broker
+        value = House.objects.filter(
+            broker_id=self.request.user.id).annotate(
+                value=Cast('price', FloatField())
+        ).aggregate(Sum('value'))
+
+        return render(request, 'dashboard.html', context={
+            'object_list': houses,
+            'value': value.get('value__sum'),
+        })
+
+
+class Profile(ListView):
+    model = Broker
+    template_name = 'profile.html'
 
     def get_queryset(self):
-        context = House.objects.filter(
-            broker_id=self.request.user.id).order_by('-created')
-        return context
+        return Broker.objects.filter(id=self.request.user.id)
+
+
+class DeleteBroker(DeleteView):
+    model = Broker
+    success_url = reverse_lazy('home')
+    template_name = 'delete_broker.html'
