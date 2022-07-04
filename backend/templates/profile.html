@@ -1,12 +1,19 @@
-{% extends 'index.html' %}
-
+{% extends 'index.html' %} 
 {% block content %}
 
-<h1>User Profile</h1>
-<p>
-    {% for p in object_list %}
-        <p>Name = {{ p.name }} </p>
-        <p>Email = {{ p.email }}</p>
-    {% endfor %}
-</p>
+<h3>Update Profile</h3>
+<form method="post">
+  {% csrf_token %}
+   {{ form.as_p }} 
+   {% comment %} {% if form.errors %}
+   {% for field in form %}
+       {% for error in field.errors %} 
+          <div class="alert alert-danger">
+               <strong>{{ error|escape }}</strong>
+          </div>
+       {% endfor %}
+   {% endfor %}
+{% endif %} {% endcomment %}
+  <button type="submit" class="btn btn-primary">Update</button>
+</form>
 {% endblock content %}

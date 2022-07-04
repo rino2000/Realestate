@@ -1,7 +1,9 @@
 <ul class="nav justify-content-center mt-3">
   {% if user.is_authenticated %}
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+    <a class="nav-link active" aria-current="page" href="{% url 'home' %}"
+      >Home</a
+    >
   </li>
   <li class="nav-item">
     <a class="nav-link" href="{% url 'createhouse' %}">Create House</a>
@@ -13,14 +15,18 @@
     <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'deletebroker' request.user.id %}">Delete Profile</a>
+    <a class="nav-link" href="{% url 'deletebroker' request.user.id %}"
+      >Delete Profile</a
+    >
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+    <a class="nav-link" href="{% url 'profile' request.user.id %}">Profile</a>
   </li>
   {% else %}
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+    <a class="nav-link active" aria-current="page" href="{% url 'home' %}"
+      >Home</a
+    >
   </li>
   <li class="nav-item">
     <a class="nav-link" href="{% url 'login' %}">Login</a>
