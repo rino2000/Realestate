@@ -1,16 +1,88 @@
-{% extends 'index.html' %}
-{% load bootstrap5 %}
-
-
-{% block content %}
+{% extends 'index.html' %} {% load bootstrap5 %} {% block content %}
 
 <div class="container center">
-<form method="post">
+  <h1>Create House</h1>
+  <form method="post">
     {% csrf_token %}
-    {% bootstrap_form form %}
+
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Title"
+        aria-label="Username"
+        aria-describedby="basic-addon1"
+      />
+    </div>
+
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Price"
+        aria-label="Username"
+      />
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Plot"
+        aria-label="Server"
+      />
+    </div>
+
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        placeholder="Bathrooms"
+        aria-label="First name"
+        class="form-control"
+      />
+      <input
+        type="text"
+        placeholder="Bedrooms"
+        aria-label="Last name"
+        class="form-control"
+      />
+    </div>
+
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        placeholder="Livinspace"
+        aria-label="First name"
+        class="form-control"
+      />
+      <input
+        type="text"
+        aria-label="Last name"
+        placeholder="Plotsize"
+        class="form-control"
+      />
+    </div>
+
+    <div class="input-group mb-3">
+      <input
+        type="text"
+        placeholder="City"
+        aria-label="First name"
+        class="form-control"
+      />
+      <input
+        type="text"
+        placeholder="Country"
+        aria-label="Last name"
+        class="form-control"
+      />
+    </div>
+
+    <div class="input-group">
+      <textarea class="form-control" placeholder="Description"></textarea>
+    </div>
+    <br />
+
     {% buttons %}
-        <button type="submit" class="btn btn-primary">Create House</button>
+    <button type="submit" class="btn btn-primary">Create House</button>
     {% endbuttons %}
-</form>
+  </form>
 </div>
 {% endblock content %}

@@ -10,7 +10,7 @@
 
 {% for house in model %}
     <hr>
-    <p>Title = {{ house.title}}</p>
+    <p><a href={% url 'houseView' house.slug %}>Title = {{ house.title}}</a></p>
     <p>Price = {{ house.price}}</p>
     <p>Plot = {{ house.plot}}</p>
     <p>Bathrooms = {{ house.bathrooms}}</p>

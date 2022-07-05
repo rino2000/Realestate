@@ -11,7 +11,8 @@ from .views import (CreateHouse,
                     Data,
                     Profile,
                     DeleteBroker,
-                    DeleteHouse
+                    DeleteHouse,
+                    HouseView
                     )
 
 urlpatterns = [
@@ -27,4 +28,5 @@ urlpatterns = [
     path('create/broker/', CreateBroker.as_view(), name='createbroker'),
     path('broker/delete/<int:pk>', DeleteBroker.as_view(), name='deletebroker'),
     path('house/delete/<int:pk>', DeleteHouse.as_view(), name='deletehouse'),
+    path('house/<slug:slug>', HouseView.as_view(), name='houseView'),
 ]

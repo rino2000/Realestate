@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import UserManager
+from django.template.defaultfilters import slugify
 
 
 class Broker(AbstractBaseUser):
@@ -58,9 +59,15 @@ class House(models.Model):
     country = models.CharField(max_length=50)
     created = models.DateTimeField(auto_now_add=True)
     broker = models.ForeignKey(Broker, null=True, on_delete=models.CASCADE)
+    slug = models.SlugField(null=False)
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('home')
+        return reverse("houseView", kwargs={"slug": self.slug})
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        return super().save(*args, **kwargs)

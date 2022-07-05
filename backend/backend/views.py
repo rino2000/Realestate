@@ -1,18 +1,15 @@
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.views import LoginView, LogoutView
-from django.views.generic.edit import DeleteView
 from django.contrib import messages
-from django.db.models import Sum
-from django.db.models import FloatField
+from django.db.models import FloatField, Sum
 from django.db.models.functions import Cast
+from django.views.generic.detail import DetailView
 
 from api.models import House, Broker
-from api.Forms import BrokerForm, HouseForm
-from api.Forms import SearchForm
+from api.Forms import BrokerForm, HouseForm, SearchForm
 
 
 class Search(View):
@@ -45,7 +42,8 @@ class Logout(LogoutView):
 class Data(View):
     def get(self, request, *args, **kwargs):
         form = SearchForm()
-        return render(request, 'index.html', context={'form': form})
+        houses = House.objects.all().count()
+        return render(request, 'index.html', context={'form': form, 'houses': houses})
 
     def post(self, request, *args, **kwargs):
         if request.method == 'POST':
@@ -116,9 +114,6 @@ class Profile(UpdateView):
     template_name = 'profile.html'
     fields = ['name', 'email']
 
-    # def get_queryset(self):
-    #     return Broker.objects.filter(id=self.request.user.id)
-
 
 class DeleteBroker(DeleteView):
     model = Broker
@@ -130,3 +125,8 @@ class DeleteHouse(DeleteView):
     model = House
     success_url = reverse_lazy('dashboard')
     template_name = 'delete_house.html'
+
+
+class HouseView(DetailView):
+    model = House
+    template_name = 'house_view.html'
