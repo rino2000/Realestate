@@ -1,14 +1,19 @@
-{% load bootstrap5 %}
-{% block content %}
-
-<div class="container center">
-<form method="post">
-  {% csrf_token %}
-  <input type="text" name="search" id="search" placeholder="Search for city">
-  {% buttons %}
-  <button type="submit" class="btn btn-primary">Search</button>
-  {% endbuttons %}
-</form>
+{% block content %} 
+<div class="flex flex-col">
+  <div>
+    <form method="post">
+      {% csrf_token %}
+      <input
+        type="text"
+        name="search"
+        id="search"
+        placeholder="Search for city"
+      />
+    </form>
+  </div>
+  <div class="text-violet-700 rounded-full">
+    <button type="submit">Search</button>
+  </div>
 </div>
 
 {% endblock %}

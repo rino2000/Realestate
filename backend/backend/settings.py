@@ -40,9 +40,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api',
     'rest_framework',
-    "bootstrap5",
-    'tailwind',
-    'theme',
     'django_browser_reload',
 ]
 
@@ -140,10 +137,11 @@ LOGIN_REDIRECT_URL = 'home'
 
 AUTH_USER_MODEL = 'api.Broker'
 
-STATIC_URL = '/static/'
-STATIC_ROOT = str(BASE_DIR) + '/static/'
+STATIC_URL = 'static/'
 
-TAILWIND_APP_NAME = 'theme'
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+]
 
 INTERNAL_IPS = [
     "127.0.0.1",
