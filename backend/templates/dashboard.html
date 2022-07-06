@@ -1,59 +1,63 @@
-{% extends 'index.html' %}
+{% extends 'index.html' %} {% block content %}
 
-{% block content %}
-
-<div class="container center shadow p-3 mb-5 bg-body rounded">
+<div class="rounded-lg mb-3">
     {% if object_list|length > 1 %}
-    <h3>Total Houses {{ object_list|length }}</h3>
+    <h3 class="bg-clip-text text-lg text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
+        Total Houses {{ object_list|length }}
+    </h3>
     {% elif object_list|length <= 1 %} <h3>{{ object_list|length }} Houses</h3>
-        {% endif %}
+        {% endif %} {% for house in object_list %}
+</div>
+<table class="table-fixed text-white bg-black">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Plot</th>
+            <th>Bathrooms</th>
+            <th>Bedrooms</th>
+            <th>Livinspace</th>
+            <th>Description</th>
+            <th>Plot Size</th>
+            <th>Uploaded at</th>
+            <th>
+                <svg xmlns="http://www.w3.org/2000/svg" style="color: red" width="16" height="16" fill="currentColor"
+                    class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
+                </svg>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ house.title }}</td>
+            <td>{{ house.price }}</td>
+            <td>{{ house.plot }}</td>
+            <td>{{ house.bathrooms }}</td>
+            <td>{{ house.bedrooms }}</td>
+            <td>{{ house.living_space }}</td>
+            <td>{{ house.description }}</td>
+            <td>{{ house.plot_size }}</td>
+            <td>{{ house.created|date:"d F Y, H:i" }}</td>
+            <td><a href="{% url 'deletehouse' house.id %}">Delete</a></td>
+        </tr>
+    </tbody>
+</table>
 
-        {% for house in object_list %}
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Plot</th>
-                    <th scope="col">Bathrooms</th>
-                    <th scope="col">Bedrooms</th>
-                    <th scope="col">Livinspace</th>
-                    <th scope="col">Description</th>
-                    <th scope="col">Plot Size</th>
-                    <th scope="col">Uploaded at</th>
-                    <th scope="col"><svg xmlns="http://www.w3.org/2000/svg" style="color:red" width="16" height="16"
-                            fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                            <path
-                                d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
-                        </svg></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>{{ house.title }}</td>
-                    <td>{{ house.price }}</td>
-                    <td>{{ house.plot }}</td>
-                    <td>{{ house.bathrooms }}</td>
-                    <td>{{ house.bedrooms }}</td>
-                    <td>{{ house.living_space }}</td>
-                    <td>{{ house.description }}</td>
-                    <td>{{ house.plot_size }}</td>
-                    <td>{{ house.created|date:"d F Y, H:i" }}</td>
-                    <td><a href="{% url "deletehouse" house.id %}">Delete</a>
-                </tr>
-            </tbody>
-        </table>
-        {% empty %}
-        <h1>No houses founded in your portfolio</h1>
-        <p>List a house now <a href="{% url 'createhouse' %}">list now</a></p>
-        {% endfor %}
+{% empty %}
+<h1>No houses founded in your portfolio</h1>
+<p>List a house now <a href="{% url 'createhouse' %}">list now</a></p>
+{% endfor %}
 </div>
-<div class="container center shadow p-3 mb-5 bg-body rounded">
-    <h1>Total house value = {{ value|default_if_none:"No value"|floatformat:2 }} €</h1>
+<div class=" center rounded-lg text-white">
+    <h1>
+        <br>
+        Total house value = {{ value|default_if_none:"No value"|floatformat:2 }} €
+    </h1>
+    <br>
 </div>
 
-<div class="container center">
-    {{ chart }}
-</div>
+<div class="text-white center">{{ chart }}</div>
 
 {% endblock content %}

@@ -1,26 +1,35 @@
 {% extends 'index.html' %}
 
+{% load humanize %}
 {% block content %}
 
 {% include 'search_bar.html' %}
 
-<div class="container center">
-<h1>{{ model|length }} Hauser insgesammt</h1>
-
+<h1 class=' mt-4 mb-4 text-violet-700 text-3xl'>{{ model|length }} Hauser insgesammt</h1>
 
 {% for house in model %}
+<div class=" center grid grid-cols-2 rounded-l ">
     <hr>
-    <p><a href={% url 'houseView' house.slug %}>Title = {{ house.title}}</a></p>
-    <p>Price = {{ house.price}}</p>
-    <p>Plot = {{ house.plot}}</p>
-    <p>Bathrooms = {{ house.bathrooms}}</p>
-    <p>Bedrooms = {{ house.bedrooms}}</p>
-    <p>Living Space = {{ house.living_space}}</p>
-    <p>City = {{ house.city}}</p>
-    <p> Country = {{ house.country}}</p>
-    <p>Description = {{ house.description}}</p>
-    {% empty %}
-        <h1>No houses found for "{{ request.path|slice:"8:" }}"</h1>
+    <div class='col-start-1 justify-start max-h-full max-w-full bg-cyan-300 text-white items-start rounded-lg'>
+        <div class=''>
+            <p>Img = {{ house.image}}</p>
+        </div>
+    </div>
+    <div class='col-end-3 text-white ml-2'>
+        <p><a class='bg-clip-text hover:text-blue-500 text-lg text-transparent bg-gradient-to-r from-pink-500 to-violet-500' href={% url 'houseView' house.slug %}>Title = {{ house.title}}</a></p>
+        <p>Price = {{ house.price|intcomma }} €</p>
+        <p>Plot = {{ house.plot}}</p>
+        <p>Bathrooms = {{ house.bathrooms}}</p>
+        <p>Bedrooms = {{ house.bedrooms}}</p>
+        <p>Living Space = {{ house.living_space}}</p>
+        <p>City = {{ house.city}}</p>
+        <p> Country = {{ house.country}}</p>
+        <p>Description = {{ house.description}}</p>
+    </div>
+</div>
+{% empty %}
+<h1>No houses found for "{{ request.path|slice:"8:" }}"</h1>
+</div>
 {% endfor %}
 
 {% endblock content %}

@@ -1,38 +1,70 @@
-<ul class="nav justify-content-center mt-3">
+<ul class="nav justify-center space-x-5 mt-3 pb-4">
   {% if user.is_authenticated %}
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="{% url 'home' %}"
+    <a
+      class="bg-clip-text hover:text-white text-lg text-transparent bg-gradient-to-r from-pink-500 to-violet-500"
+      aria-current="page"
+      href="{% url 'home' %}"
       >Home</a
     >
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'createhouse' %}">Create House</a>
+    <a
+      class="bg-clip-text hover:text-white text-lg text-transparent bg-gradient-to-r from-pink-500 to-violet-500"
+      href="{% url 'createhouse' %}"
+      >Create House</a
+    >
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+    <a
+      class="bg-clip-text hover:text-white text-lg text-transparent bg-gradient-to-r from-pink-500 to-violet-500"
+      href="{% url 'logout' %}"
+      >Logout</a
+    >
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+    <a
+      class="bg-clip-text hover:text-white text-lg text-transparent bg-gradient-to-r from-pink-500 to-violet-500"
+      href="{% url 'dashboard' %}"
+      >Dashboard</a
+    >
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'deletebroker' request.user.id %}"
+    <a
+      class="bg-clip-text hover:text-white text-lg text-transparent bg-gradient-to-r from-pink-500 to-violet-500"
+      href="{% url 'deletebroker' request.user.id %}"
       >Delete Profile</a
     >
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'profile' request.user.id %}">Profile</a>
+    <a
+      class="bg-clip-text hover:text-white text-lg text-transparent bg-gradient-to-r from-pink-500 to-violet-500"
+      href="{% url 'profile' request.user.id %}"
+      >Profile</a
+    >
   </li>
   {% else %}
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="{% url 'home' %}"
+    <a
+      class="bg-clip-text hover:text-white text-lg text-transparent bg-gradient-to-r from-pink-500 to-violet-500"
+      aria-current="page"
+      href="{% url 'home' %}"
       >Home</a
     >
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'login' %}">Login</a>
+    <a
+      class="bg-clip-text hover:text-white text-lg text-transparent bg-gradient-to-r from-pink-500 to-violet-500"
+      href="{% url 'login' %}"
+      >Login</a
+    >
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'createbroker' %}">Create Broker</a>
+    <a
+      class="bg-clip-text hover:text-white text-lg text-transparent bg-gradient-to-r from-pink-500 to-violet-500"
+      href="{% url 'createbroker' %}"
+      >Create Broker</a
+    >
   </li>
   {% endif %}
 </ul>

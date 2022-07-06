@@ -1,17 +1,20 @@
-{% extends 'index.html' %}
+{% extends 'index.html' %} {% block content %} {% load humanize %}
 
-{% block content %}
-
-<h1>{{ object.title }}</h1>
-<p>{{ object.price }}</p>
-<p>{{ object.plot }}</p>
+<div class="container bg-white rounded-lg grid grid-cols-2">
+  <div clas="">
+    <img>{{ object.image }}</img>
+  </div>
+  <h1>{{ object.title }}</h1>
+  <p>{{ object.price|intcomma }} €</p>
+  <p>{{ object.plot }}</p>
 <p>{{ object.bathrooms }}</p>
-<p>{{ object.bedrooms }}</p>
-<p>{{ object.living_space }}</p>
-<p>{{ object.plot_size }}</p>
-<p>{{ object.description }}</p>
-<p>{{ object.city }}</p>
-<p>{{ object.country }}</p>
-<p>{{ object.description }}</p>
+  <p>{{ object.bedrooms }}</p>
+  <p>{{ object.living_space }}</p>
+  <p>{{ object.plot_size }}</p>
+  <p>{{ object.description }}</p>
+  <p>{{ object.city }}</p>
+  <p>{{ object.country }}</p>
+  <p>{{ object.description }}</p>
+</div>
 
 {% endblock content %}

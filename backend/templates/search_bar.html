@@ -1,19 +1,26 @@
-{% block content %} 
-<div class="flex flex-col">
-  <div>
-    <form method="post">
-      {% csrf_token %}
+{% block content %}
+
+<div class="bg-white flex flex-row h-20 mb-2 rounded-lg">
+  <form method="post">
+    {% csrf_token %}
+    <div class="flex">
       <input
-        type="text"
         name="search"
         id="search"
-        placeholder="Search for city"
+        class="text-sm text-white bg-black rounded-lg p-1 m-1"
+        placeholder="Search for City"
+        required
       />
-    </form>
-  </div>
-  <div class="text-violet-700 rounded-full">
-    <button type="submit">Search</button>
-  </div>
+    </div>
+    <div class="flex">
+      <button
+        type="submit"
+        class="text-white p-1 m-1 right-2.5 bottom-2.5 bg-blue-500 focus:ring-4 font-medium rounded-lg text-sm px-4 py-2"
+      >
+        Search
+      </button>
+    </div>
+  </form>
 </div>
 
 {% endblock %}
