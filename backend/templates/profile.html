@@ -1,19 +1,12 @@
 {% extends 'index.html' %} 
 {% block content %}
 
-<h3>Update Profile</h3>
+<h3 class="text-3xl text-blue-600 mb-2">Update Profile</h3>
 <form method="post">
   {% csrf_token %}
-   {{ form.as_p }} 
-   {% comment %} {% if form.errors %}
-   {% for field in form %}
-       {% for error in field.errors %} 
-          <div class="alert alert-danger">
-               <strong>{{ error|escape }}</strong>
-          </div>
-       {% endfor %}
-   {% endfor %}
-{% endif %} {% endcomment %}
-  <button type="submit" class="btn btn-primary">Update</button>
+  {{ form.as_p }} 
+  <div class='text-blue-600 border-lg mt-1 border-white border-2 rounded-lg p-1'>
+  <button type="submit" class="">Update</button>
+  </div>
 </form>
 {% endblock content %}

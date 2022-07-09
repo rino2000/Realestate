@@ -114,7 +114,6 @@ class Profile(UpdateView):
     template_name = 'profile.html'
     fields = ['name', 'email']
 
-
 class DeleteBroker(DeleteView):
     model = Broker
     success_url = reverse_lazy('home')

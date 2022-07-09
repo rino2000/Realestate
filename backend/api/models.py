@@ -25,6 +25,9 @@ class Broker(AbstractBaseUser):
     def __str__(self):
         return self.name
 
+    def id(self):
+        return self.id
+
     def get_absolute_url(self):
         return reverse('home')
 

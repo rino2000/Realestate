@@ -1,63 +1,77 @@
-{% extends 'index.html' %} {% block content %}
+{% extends 'index.html' %}
+{% load humanize %}
+ {% block content %}
 
 <div class="rounded-lg mb-3">
-    {% if object_list|length > 1 %}
-    <h3 class="bg-clip-text text-lg text-transparent bg-gradient-to-r from-pink-500 to-violet-500">
-        Total Houses {{ object_list|length }}
-    </h3>
-    {% elif object_list|length <= 1 %} <h3>{{ object_list|length }} Houses</h3>
-        {% endif %} {% for house in object_list %}
+  {% if object_list|length > 1 %}
+  <h3
+    class="bg-clip-text text-3xl text-transparent bg-gradient-to-r from-pink-500 to-violet-500"
+  >
+    Total Houses {{ object_list|length }}
+  </h3>
+  {% elif object_list|length <= 1 %}
+  <h3>{{ object_list|length }} Houses</h3>
+  {% endif %} {% for house in object_list %}
 </div>
-<table class="table-fixed text-white bg-black">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Price</th>
-            <th>Plot</th>
-            <th>Bathrooms</th>
-            <th>Bedrooms</th>
-            <th>Livinspace</th>
-            <th>Description</th>
-            <th>Plot Size</th>
-            <th>Uploaded at</th>
-            <th>
-                <svg xmlns="http://www.w3.org/2000/svg" style="color: red" width="16" height="16" fill="currentColor"
-                    class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                    <path
-                        d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5Zm-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5ZM4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06Zm6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528ZM8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5Z" />
-                </svg>
-            </th>
-        </tr>
+
+<div class="relative overflow-x-auto rounded-lg shadow-md bg-white w-full mb-4">
+  <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <thead
+      class="text-xs text-white text-transparent bg-violet-700 uppercase dark:text-gray-400"
+    >
+      <tr>
+        <th scope="col" class="px-6 py-3">Title</th>
+        <th scope="col" class="px-6 py-3">Price</th>
+        <th scope="col" class="px-6 py-3">Plot</th>
+        <th scope="col" class="px-6 py-3">Bathrooms</th>
+        <th scope="col" class="px-6 py-3">Bedrooms</th>
+        <th scope="col" class="px-6 py-3">Living Space</th>
+        <th scope="col" class="px-6 py-3">Plot Size</th>
+        <th scope="col" class="px-6 py-3">Description</th>
+        <th scope="col" class="px-6 py-3">Created</th>
+        <th scope="col" class="px-6 py-3">
+          <span class="sr-only">Delte</span>
+        </th>
+      </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>{{ house.title }}</td>
-            <td>{{ house.price }}</td>
-            <td>{{ house.plot }}</td>
-            <td>{{ house.bathrooms }}</td>
-            <td>{{ house.bedrooms }}</td>
-            <td>{{ house.living_space }}</td>
-            <td>{{ house.description }}</td>
-            <td>{{ house.plot_size }}</td>
-            <td>{{ house.created|date:"d F Y, H:i" }}</td>
-            <td><a href="{% url 'deletehouse' house.id %}">Delete</a></td>
-        </tr>
+      <tr class="bg-violet-900 text-white">
+        <th
+          scope="row"
+          class="px-6 py-4 font-medium text-white whitespace-nowrap"
+        >
+          {{ house.title }}
+        </th>
+        <td class="px-6 py-4">{{ house.price|intcomma }}€</td>
+        <td class="px-6 py-4">{{ house.plot }}</td>
+        <td class="px-6 py-4">{{ house.bathrooms }}</td>
+        <td class="px-6 py-4">{{ house.bedrooms }}</td>
+        <td class="px-6 py-4">{{ house.living_space }}</td>
+        <td class="px-6 py-4">{{ house.plot_size }}</td>
+        <td class="px-6 py-4">{{ house.description }}</td>
+        <td class="px-6 py-4">{{ house.created|date:"d F Y, H:i" }}</td>
+        <td class="px-6 py-4 text-right">
+          <a
+            href="{% url 'deletehouse' house.id %}"
+            class="font-medium text-red-700 hover:underline hover:text-red-800"
+            >Delete</a
+          >
+        </td>
+      </tr>
     </tbody>
-</table>
-
-{% empty %}
-<h1>No houses founded in your portfolio</h1>
-<p>List a house now <a href="{% url 'createhouse' %}">list now</a></p>
-{% endfor %}
-</div>
-<div class=" center rounded-lg text-white">
-    <h1>
-        <br>
-        Total house value = {{ value|default_if_none:"No value"|floatformat:2 }} €
-    </h1>
-    <br>
+  </table>
+  {% empty %}
+  <h1>No houses founded in your portfolio</h1>
+  <p>List a house now <a href="{% url 'createhouse' %}">list now</a></p>
+  {% endfor %}
 </div>
 
-<div class="text-white center">{{ chart }}</div>
+<div class="bg-black p-3 text-3xl">
+  <h1 class="text-purple-600">
+    Total house value = {{ value|default_if_none:"No value"|intcomma }} €
+  </h1>
+</div>
+
+<div class="text-black rounded-lg p-3 mt-3 center bg-white">{{ chart }}</div>
 
 {% endblock content %}
