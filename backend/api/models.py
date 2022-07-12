@@ -11,6 +11,7 @@ class Broker(AbstractBaseUser):
     email = models.EmailField(
         max_length=200, blank=False, null=False, unique=True)
     password = models.CharField(max_length=255, blank=False, null=False)
+    telephone_number = models.CharField(max_length=20, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
 
     USERNAME_FIELD = 'email'

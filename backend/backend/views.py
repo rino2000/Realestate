@@ -128,3 +128,18 @@ class DeleteHouse(DeleteView):
 class HouseView(DetailView):
     model = House
     template_name = 'house_view.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # get broker id from house
+        broker_id = context['object'].broker_id
+
+        # get broker by id, that listed that real estate
+        broker = Broker.objects.filter(id=broker_id).first()
+
+        # add broker data to context to render in html
+        context['broker'] = broker
+        context['broker_email'] = broker.email
+        context['broker_telefonenummber'] = broker.telephone_number
+        return context
