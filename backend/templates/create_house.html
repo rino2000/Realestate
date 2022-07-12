@@ -1,89 +1,21 @@
 {% extends 'index.html' %} {% block content %}
 
-<div class="container center flex flex-col w-lg items-center">
+<div class="text-white center flex flex-col w-lg items-center">
   <form method="post">
-    {% csrf_token %}
-
-    <div class="input-group mb-3">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Title"
-        aria-label="Username"
-        aria-describedby="basic-addon1"
-      />
-    </div>
-
-    <div class="input-group mb-3">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Price"
-        aria-label="Username"
-      />
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Plot"
-        aria-label="Server"
-      />
-    </div>
-
-    <div class="input-group mb-3">
-      <input
-        type="text"
-        placeholder="Bathrooms"
-        aria-label="First name"
-        class="form-control"
-      />
-      <input
-        type="text"
-        placeholder="Bedrooms"
-        aria-label="Last name"
-        class="form-control"
-      />
-    </div>
-
-    <div class="input-group mb-3">
-      <input
-        type="text"
-        placeholder="Livinspace"
-        aria-label="First name"
-        class="form-control"
-      />
-      <input
-        type="text"
-        aria-label="Last name"
-        placeholder="Plotsize"
-        class="form-control"
-      />
-    </div>
-
-    <div class="input-group mb-3">
-      <input
-        type="text"
-        placeholder="City"
-        aria-label="First name"
-        class="form-control"
-      />
-      <input
-        type="text"
-        placeholder="Country"
-        aria-label="Last name"
-        class="form-control"
-      />
-    </div>
-
-    <div class="input-group">
-      <textarea class="form-control" placeholder="Description"></textarea>
-    </div>
-    <br />
-
+    {% csrf_token %} {% for error in field.errors %}
+    <p class="text-red"><strong>{{error}}</strong></p>
+    {% endfor %} {% for f in form %} {{ f.label_tag }}
+    <input
+      name="{{ f.html_name }}"
+      class="bg-transparent text-white p-1 border-1 rounded-lg border-red-600"
+      type="text"
+    />
+    {% endfor %}
     <button
       type="submit"
       class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
     >
-    Create House
+      Create House
     </button>
   </form>
 </div>

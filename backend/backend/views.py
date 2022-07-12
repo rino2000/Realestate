@@ -54,8 +54,6 @@ class Data(View):
 
 
 class CreateHouse(View):
-    template_name = 'create_house.html'
-
     def get(self, request):
         form = HouseForm()
         return render(request, 'create_house.html', context={'form': form})
@@ -113,6 +111,7 @@ class Profile(UpdateView):
     model = Broker
     template_name = 'profile.html'
     fields = ['name', 'email']
+
 
 class DeleteBroker(DeleteView):
     model = Broker

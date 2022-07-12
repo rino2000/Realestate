@@ -1,6 +1,4 @@
-{% extends 'index.html' %}
-{% load humanize %}
- {% block content %}
+{% extends 'index.html' %} {% load humanize %} {% block content %}
 
 <div class="rounded-lg mb-3">
   {% if object_list|length > 1 %}
@@ -10,7 +8,7 @@
     Total Houses {{ object_list|length }}
   </h3>
   {% elif object_list|length <= 1 %}
-  <h3>{{ object_list|length }} Houses</h3>
+  <h3 class='text-white text-3xl'>{{ object_list|length }} Houses</h3>
   {% endif %} {% for house in object_list %}
 </div>
 
@@ -61,8 +59,11 @@
     </tbody>
   </table>
   {% empty %}
-  <h1>No houses founded in your portfolio</h1>
-  <p>List a house now <a href="{% url 'createhouse' %}">list now</a></p>
+  <h1 class="text-blue-600 text-3xl">No houses founded in your portfolio</h1>
+  <p class="text-white">
+    List a house now
+    <a href="{% url 'createhouse' %}" class="text-blue-700">list</a>
+  </p>
   {% endfor %}
 </div>
 
@@ -71,7 +72,5 @@
     Total house value = {{ value|default_if_none:"No value"|intcomma }} €
   </h1>
 </div>
-
-<div class="text-black rounded-lg p-3 mt-3 center bg-white">{{ chart }}</div>
 
 {% endblock content %}

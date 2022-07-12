@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import AbstractBaseUser
@@ -61,7 +62,8 @@ class House(models.Model):
     city = models.CharField(max_length=50)
     country = models.CharField(max_length=50)
     created = models.DateTimeField(auto_now_add=True)
-    broker = models.ForeignKey(Broker, null=True, on_delete=models.CASCADE)
+    broker = models.ForeignKey(
+        Broker, null=True, on_delete=models.CASCADE)
     slug = models.SlugField(null=False)
 
     def __str__(self):
