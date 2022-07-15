@@ -1,4 +1,4 @@
-import 'package:app/houseList.dart';
+import 'package:app/screens/houseList.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,16 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: Scaffold(
-        extendBodyBehindAppBar: true,
-        body: Column(
-          children: const [
-            Expanded(
-              child: HouseList(),
-            ),
-          ],
-        ),
-      ),
+      theme: ThemeData(),
+      home: const HouseList(),
     );
   }
 }
