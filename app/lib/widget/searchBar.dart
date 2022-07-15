@@ -2,14 +2,14 @@
 
 import 'package:flutter/material.dart';
 
-class SpaceBar extends StatefulWidget {
-  const SpaceBar({Key? key}) : super(key: key);
+class SearchBar extends StatefulWidget {
+  const SearchBar({Key? key}) : super(key: key);
 
   @override
-  State<SpaceBar> createState() => _SpaceBarState();
+  State<SearchBar> createState() => _SearchBarState();
 }
 
-class _SpaceBarState extends State<SpaceBar> {
+class _SearchBarState extends State<SearchBar> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();

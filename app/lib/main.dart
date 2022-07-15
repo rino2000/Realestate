@@ -1,3 +1,4 @@
+import 'package:app/screens/dashboard.dart';
 import 'package:app/screens/houseList.dart';
 import 'package:flutter/material.dart';
 
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(),
-      home: const HouseList(),
+      home: const Dashboard(),
     );
   }
 }
