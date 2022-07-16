@@ -32,4 +32,6 @@ urlpatterns = [
     path('broker/delete/<int:pk>', DeleteBroker.as_view(), name='deletebroker'),
     path('house/delete/<int:pk>', DeleteHouse.as_view(), name='deletehouse'),
     path('house/<slug:slug>', HouseView.as_view(), name='houseView'),
+
+    path('api-auth/', include('rest_framework.urls'))
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
