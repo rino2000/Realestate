@@ -106,16 +106,14 @@ class Dashboard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    'Total house value = 1,225,141,333.99 €',
-                    style: TextStyle(fontSize: 19, color: Colors.deepPurple),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text(
+                  'Total house value = 1,225,141,333.99 €',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.deepPurple,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
