@@ -4,7 +4,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.authtoken import views
 
-from api.views import UserViewSet, BrokerView
+from api.views import HouseViewSet, BrokerView, BrokerHouseList
 from .views import (CreateHouse,
                     CreateBroker,
                     Dashboard,
@@ -23,8 +23,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', Data.as_view(), name='home'),
     path('search/<q>', Search.as_view(), name='search'),
-    path('api/data/', UserViewSet.as_view()),
+    path('api/data/', HouseViewSet.as_view()),
     path('api/broker/', BrokerView.as_view()),
+    path('api/broker/houses/', BrokerHouseList.as_view()),
     path('login/', Login.as_view(), name='login'),
     path('logout/', Logout.as_view(), name='logout'),
     path('create/house/', CreateHouse.as_view(), name='createhouse'),

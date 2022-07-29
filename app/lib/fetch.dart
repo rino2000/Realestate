@@ -28,11 +28,30 @@ Future<Broker> fetchBroker() async {
       HttpHeaders.authorizationHeader: 'Token $token',
     },
   );
+  print(response.body);
 
   if (response.statusCode == 200) {
     return Broker.fromJson(jsonDecode(response.body));
   }
   return Future.error('Failed to load broker');
+}
+
+Future<List<House>> fetchBrokerHouses() async {
+  final sp = await SharedPreferences.getInstance();
+  final token = sp.getString('token');
+  final response = await http.get(
+    Uri.parse('http://127.0.0.1:8000/api/broker/houses/'),
+    headers: {
+      HttpHeaders.authorizationHeader: 'Token $token',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    List<House> r = List<House>.from(
+        json.decode(response.body).map((data) => House.fromJson(data)));
+    return r;
+  }
+  return Future.error('Failed to load houses');
 }
 
 Future<Token> login(String? email, String? password) async {
