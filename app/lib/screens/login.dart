@@ -2,6 +2,10 @@
 
 import 'package:app/screens/houseList.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../fetch.dart';
+import '../models/Token.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -14,6 +18,19 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   var email_controller = TextEditingController();
   var password_controller = TextEditingController();
+
+  late Future<Token> future_toke;
+
+  Future<void> add(String? token) async {
+    final sp = await SharedPreferences.getInstance();
+    await sp.setString('token', token!);
+  }
+
+  Future<void> brokerSP(List<String> broker) async {
+    final sp = await SharedPreferences.getInstance();
+    await sp.setStringList('broker', broker);
+  }
+
   @override
   void dispose() {
     email_controller.dispose();
@@ -96,11 +113,24 @@ class _LoginState extends State<Login> {
                 ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => const HouseList(),
-                        ),
-                      );
+                      setState(() {
+                        brokerSP([
+                          email_controller.text.trim(),
+                          password_controller.text.trim()
+                        ]);
+                        future_toke = login(email_controller.text.trim(),
+                            password_controller.text.trim());
+
+                        future_toke.then((value) => add(value.token));
+
+                        future_toke.whenComplete(
+                            () => Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        const HouseList(),
+                                  ),
+                                ));
+                      });
                     }
                   },
                   child: const Text('Login'),

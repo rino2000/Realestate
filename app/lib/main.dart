@@ -1,7 +1,6 @@
-import 'package:app/screens/houseList.dart';
-import 'package:app/screens/register.dart';
 import 'package:flutter/material.dart';
 
+import 'screens/dashboard.dart';
 import 'screens/login.dart';
 
 void main() {
@@ -17,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(),
-      home: const Register(),
+      home: const Dashboard(),
     );
   }
 }

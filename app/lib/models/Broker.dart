@@ -1,4 +1,5 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, file_names
+
 class Broker {
   int? id;
   String? name, email, password, telephone_number;
@@ -12,21 +13,12 @@ class Broker {
       name: json["name"],
       email: json["email"],
       password: json["password"],
+      telephone_number: json["telephone_number"],
     );
   }
 
   @override
-  String toString() => 'Broker(id: $id, telephone_number: $telephone_number)';
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-
-    return other is Broker &&
-        other.id == id &&
-        other.telephone_number == telephone_number;
+  String toString() {
+    return "Broker($id, $name, $email, $password, $telephone_number)";
   }
-
-  @override
-  int get hashCode => id.hashCode ^ telephone_number.hashCode;
 }

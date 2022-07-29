@@ -1,7 +1,25 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 
-class Dashboard extends StatelessWidget {
+import '../fetch.dart';
+import '../models/Broker.dart';
+
+class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
+
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  late Future<Broker> future;
+
+  @override
+  void initState() {
+    super.initState();
+    future = fetchBroker();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,63 +60,65 @@ class Dashboard extends StatelessWidget {
                       DataColumn(
                         label: Text(
                           'Title',
-                          style: TextStyle(fontStyle: FontStyle.italic),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           'Price',
-                          style: TextStyle(fontStyle: FontStyle.italic),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           'Plot',
-                          style: TextStyle(fontStyle: FontStyle.italic),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           'Bathrooms',
-                          style: TextStyle(fontStyle: FontStyle.italic),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           'Bedrooms',
-                          style: TextStyle(fontStyle: FontStyle.italic),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           'Living Space',
-                          style: TextStyle(fontStyle: FontStyle.italic),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           'Plot size',
-                          style: TextStyle(fontStyle: FontStyle.italic),
                         ),
                       ),
                       DataColumn(
                         label: Text(
                           'Created',
-                          style: TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                      ),
+                      DataColumn(
+                        label: Text(
+                          'Delete',
                         ),
                       ),
                     ],
-                    rows: const <DataRow>[
+                    rows: <DataRow>[
                       DataRow(
                         cells: <DataCell>[
-                          DataCell(Text(' test vill marbella ')),
-                          DataCell(Text('12,120,012.99€')),
-                          DataCell(Text('10')),
-                          DataCell(Text('12')),
-                          DataCell(Text('1200')),
-                          DataCell(Text('1200')),
-                          DataCell(Text('400')),
-                          DataCell(Text('12 July 2022, 09:35')),
+                          const DataCell(Text(' test vill marbella ')),
+                          const DataCell(Text('12,120,012.99€')),
+                          const DataCell(Text('10')),
+                          const DataCell(Text('12')),
+                          const DataCell(Text('1200')),
+                          const DataCell(Text('1200')),
+                          const DataCell(Text('400')),
+                          const DataCell(Text('12 July 2022, 09:35')),
+                          DataCell(IconButton(
+                            icon: const Icon(Icons.delete_outline,
+                                color: Colors.red),
+                            onPressed: () => print('delete house'),
+                          )),
                         ],
                       ),
                     ],
@@ -117,6 +137,43 @@ class Dashboard extends StatelessWidget {
                   ),
                 ),
               ),
+              const Text(
+                "delte profile",
+                style: TextStyle(color: Colors.white),
+              ),
+              IconButton(
+                onPressed: () => print('delete profile'),
+                icon: const Icon(
+                  Icons.delete_outline,
+                  color: Colors.red,
+                ),
+              ),
+              FutureBuilder<Broker>(
+                future: future,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    );
+                  }
+                  if (snapshot.hasData) {
+                    return Column(
+                      children: [
+                        Text(
+                          snapshot.data!.email!,
+                          style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+                  return const Center(child: CircularProgressIndicator());
+                },
+              )
             ],
           ),
         ),

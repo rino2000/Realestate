@@ -1,6 +1,9 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/House.dart';
 
@@ -21,6 +24,22 @@ class _HouseItemState extends State<HouseItem> {
       Color.fromARGB(255, 193, 0, 252)
     ],
   ).createShader(const Rect.fromLTWH(0.0, 0.0, 200.0, 70.0));
+
+  String token = "";
+
+  Future<void> get() async {
+    var sp = await SharedPreferences.getInstance();
+    setState(() {
+      token = sp.getString('token')!;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    get();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -94,6 +113,7 @@ class _HouseItemState extends State<HouseItem> {
                 Text(widget.data[widget.index].plot_size!),
               ],
             ),
+            Text(token),
             const SizedBox(height: 10),
           ],
         ),

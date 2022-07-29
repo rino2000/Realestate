@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_browser_reload',
     'django.contrib.humanize',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -147,3 +148,14 @@ STATICFILES_DIRS = [
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
