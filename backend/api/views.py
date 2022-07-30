@@ -44,11 +44,8 @@ class BrokerView(APIView):
         serializer = self.serializer_class(broker)
         totalHouses = _.count()
 
-        # return Response({serializer.data, value, totalHouses})
-
         context = {'broker_data': serializer.data,
                    'value': value, 'totalHouses': totalHouses}
-        print(context)
         return Response(context)
 
 

@@ -28,7 +28,6 @@ Future<Broker> fetchBroker() async {
       HttpHeaders.authorizationHeader: 'Token $token',
     },
   );
-  print(response.body);
 
   if (response.statusCode == 200) {
     return Broker.fromJson(jsonDecode(response.body));

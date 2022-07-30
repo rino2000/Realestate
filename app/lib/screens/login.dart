@@ -41,6 +41,9 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+      ),
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Form(
@@ -110,7 +113,7 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 const SizedBox(height: 10),
-                ElevatedButton(
+                TextButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       setState(() {
@@ -133,7 +136,10 @@ class _LoginState extends State<Login> {
                       });
                     }
                   },
-                  child: const Text('Login'),
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(fontSize: 20, color: Colors.blue),
+                  ),
                 ),
               ],
             ),

@@ -1,5 +1,6 @@
 // ignore_for_file: avoid_print
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -28,6 +29,7 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.black),
       backgroundColor: Colors.black,
       body: SafeArea(
         child: Padding(
@@ -68,7 +70,6 @@ class _DashboardState extends State<Dashboard> {
                     return SizedBox(
                       height: 200,
                       child: ListView.builder(
-                        scrollDirection: Axis.vertical,
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
                           return DataTable(
@@ -134,7 +135,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                               ),
                             ],
-                            rows: <DataRow>[
+                            rows: [
                               DataRow(
                                 cells: <DataCell>[
                                   DataCell(Text(snapshot.data![index].title!)),
@@ -178,29 +179,19 @@ class _DashboardState extends State<Dashboard> {
                       return const CircularProgressIndicator.adaptive();
                     }
                     return Text(
-                      "${NumberFormat.currency(locale: 'de_DE').format(
+                      "Total House Value ${NumberFormat.currency(locale: 'de_DE').format(
                         double.parse(
                           snapshot.data!.value!.valueSum.toString(),
                         ),
                       )} €",
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 23,
                         color: Colors.deepPurple,
                         fontWeight: FontWeight.bold,
                       ),
                     );
                   }),
-              const Text(
-                "delte profile",
-                style: TextStyle(color: Colors.white),
-              ),
-              IconButton(
-                onPressed: () => print('delete profile'),
-                icon: const Icon(
-                  Icons.delete_outline,
-                  color: Colors.red,
-                ),
-              ),
+              const SizedBox(height: 10),
               FutureBuilder<Broker>(
                 future: future,
                 builder: (context, snapshot) {
@@ -210,33 +201,72 @@ class _DashboardState extends State<Dashboard> {
                     );
                   }
                   if (snapshot.hasData) {
-                    return Column(
-                      children: [
-                        Text(
-                          snapshot.data!.brokerData!.email!,
-                          style: const TextStyle(
-                              color: Colors.red,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          snapshot.data!.brokerData!.name!,
-                          style: const TextStyle(
-                              color: Colors.red,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SelectableText(
+                            "Your Email = ${snapshot.data!.brokerData!.email!}",
+                            style: const TextStyle(
+                                color: Colors.red,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SelectableText(
+                            "Your Name = ${snapshot.data!.brokerData!.name!}",
+                            style: const TextStyle(
+                                color: Colors.red,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     );
                   } else if (snapshot.hasError) {
                     return Text('${snapshot.error}');
                   }
                   return const Center(child: CircularProgressIndicator());
                 },
-              )
+              ),
+              TextButton.icon(
+                onPressed: () => _showAlertDialog(context),
+                icon: const Icon(
+                  Icons.delete_outline,
+                  color: Colors.red,
+                ),
+                label: const Text(
+                  "Delete Profile",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _showAlertDialog(BuildContext context) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoAlertDialog(
+        title: const Text('Delete Account'),
+        content: const Text('Shure to delete this Account'),
+        actions: <CupertinoDialogAction>[
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () => Navigator.pop(context),
+            child: const Text('No'),
+          ),
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Yes'),
+          )
+        ],
       ),
     );
   }

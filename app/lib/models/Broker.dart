@@ -16,7 +16,7 @@ class Broker {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (brokerData != null) {
       data['broker_data'] = brokerData!.toJson();
     }
@@ -52,7 +52,7 @@ class BrokerData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
     data['last_login'] = lastLogin;
     data['name'] = name;
@@ -74,7 +74,7 @@ class Value {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['value__sum'] = valueSum;
     return data;
   }
