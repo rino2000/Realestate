@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, must_be_immutable
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -97,7 +97,6 @@ class _HouseItemState extends State<HouseItem> {
                 Text(widget.data[widget.index].plot_size!),
               ],
             ),
-            const SizedBox(height: 10),
           ],
         ),
       ),

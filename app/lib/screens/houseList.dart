@@ -1,10 +1,11 @@
-// ignore_for_file: file_names, avoid_print
+// ignore_for_file: file_names, avoid_print, must_be_immutable
 import 'package:app/screens/login.dart';
 import 'package:flutter/material.dart';
 
 import '../fetch.dart';
 import '../models/House.dart';
 import '../widget/houseItem.dart';
+import '../widget/houseItemHero.dart';
 import 'dashboard.dart';
 
 class HouseList extends StatefulWidget {
@@ -20,11 +21,7 @@ class _HouseListState extends State<HouseList> {
   int _selectedIndex = 0;
   bool isLoggedIn = false;
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  void _onItemTapped(int index) => setState(() => _selectedIndex = index);
 
   @override
   void initState() {
@@ -40,18 +37,33 @@ class _HouseListState extends State<HouseList> {
       body: FutureBuilder<List<House>>(
         future: futureHouse,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data!.length,
-              itemBuilder: ((context, index) => HouseItem(
-                    data: snapshot.data!,
-                    index: index,
-                  )),
-            );
-          } else if (snapshot.hasError) {
+          if (snapshot.hasError) {
             return Center(child: Text('${snapshot.error}'));
           }
-          return const Center(child: CircularProgressIndicator.adaptive());
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
+            );
+          }
+          return SizedBox(
+            child: ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: ((context, index) => Hero(
+                    tag: UniqueKey(),
+                    child: GestureDetector(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) => HouseItemHero(
+                            data: snapshot.data!,
+                            index: index,
+                          ),
+                        ),
+                      ),
+                      child: HouseItem(index: index, data: snapshot.data!),
+                    ),
+                  )),
+            ),
+          );
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
