@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, avoid_print, must_be_immutable
 import 'package:app/screens/login.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../fetch.dart';
 import '../models/House.dart';
@@ -19,14 +20,22 @@ class _HouseListState extends State<HouseList> {
   late Future<List<House>> futureHouse;
 
   int _selectedIndex = 0;
-  bool isLoggedIn = false;
+  bool isLoggedin = false;
 
   void _onItemTapped(int index) => setState(() => _selectedIndex = index);
+
+  Future<void> loginCheck() async {
+    final i = await SharedPreferences.getInstance();
+    i.containsKey('broker')
+        ? setState(() => isLoggedin = true)
+        : setState(() => isLoggedin = false);
+  }
 
   @override
   void initState() {
     super.initState();
     futureHouse = fetchHouses();
+    loginCheck();
   }
 
   @override
@@ -79,25 +88,15 @@ class _HouseListState extends State<HouseList> {
           ),
           // BottomNavigationBarItem(
           //   icon: IconButton(
-          //     icon: const Icon(Icons.search_rounded),
+          //     icon: const Icon(Icons.dashboard_rounded),
           //     onPressed: () => Navigator.push(
           //       context,
-          //       MaterialPageRoute(builder: (context) => const HouseList()),
+          //       MaterialPageRoute(builder: (context) => const Dashboard()),
           //     ),
           //   ),
-          //   label: 'Search',
+          //   label: 'Dashboard',
           // ),
-          BottomNavigationBarItem(
-            icon: IconButton(
-              icon: const Icon(Icons.dashboard_rounded),
-              onPressed: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Dashboard()),
-              ),
-            ),
-            label: 'Dashboard',
-          ),
-          isLoggedIn
+          isLoggedin
               ? BottomNavigationBarItem(
                   icon: IconButton(
                     icon: const Icon(Icons.dashboard_rounded),

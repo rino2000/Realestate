@@ -2,9 +2,10 @@ from rest_framework import serializers, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models.functions import Cast
 from django.db.models import FloatField, Sum
+from django.contrib.auth import logout
 
 from .models import Broker, House
 
@@ -58,3 +59,12 @@ class BrokerHouseList(APIView):
         houses = House.objects.filter(broker_id=self.request.user.id)
         serializer = self.serializer_class(houses, many=True)
         return Response(serializer.data)
+
+
+class LogoutBrokerAPI(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        self.request.user.auth_token.delete()
+        logout(request)
+        return Response('User successfully logged out')

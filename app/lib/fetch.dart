@@ -70,3 +70,14 @@ Future<Token> login(String? email, String? password) async {
   }
   return Future.error("FAiled to get token");
 }
+
+Future<bool> logout() async {
+  final response = await http.get(
+    Uri.parse('http://127.0.0.1:8000/api/logout/'),
+  );
+
+  if (response.statusCode == 200) {
+    return true;
+  }
+  return false;
+}
