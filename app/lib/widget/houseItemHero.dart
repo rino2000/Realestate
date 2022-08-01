@@ -26,30 +26,6 @@ class _HouseItemHeroState extends State<HouseItemHero> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.black,
-        actions: [
-          IconButton(
-            onPressed: () {
-              setState(() => isLiked ? isLiked = false : isLiked = true);
-              isLiked
-                  ? ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        backgroundColor: Colors.red,
-                        content: Text("House Saved"),
-                        duration: Duration(milliseconds: 500),
-                      ),
-                    )
-                  : ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        backgroundColor: Colors.red,
-                        content: Text("House removed"),
-                        duration: Duration(milliseconds: 500),
-                      ),
-                    );
-            },
-            icon: FaIcon(FontAwesomeIcons.heart,
-                color: isLiked ? Colors.red : Colors.white),
-          )
-        ],
         title: SelectableText(widget.data[widget.index].title!),
       ),
       backgroundColor: Colors.black,
@@ -77,7 +53,10 @@ class _HouseItemHeroState extends State<HouseItemHero> {
                   NumberFormat.currency(locale: 'de_DE')
                       .format(int.parse(widget.data[widget.index].price!))
                       .toString(),
-                  style: const TextStyle(fontSize: 20, color: Colors.white),
+                  style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      overflow: TextOverflow.ellipsis),
                 ),
               ],
             ),
@@ -120,8 +99,8 @@ class _HouseItemHeroState extends State<HouseItemHero> {
                             color: Colors.white),
                         Text(
                           widget.data[widget.index].bathrooms!,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 20),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 20),
                         ),
                       ],
                     ),
@@ -138,8 +117,8 @@ class _HouseItemHeroState extends State<HouseItemHero> {
                         const FaIcon(FontAwesomeIcons.bed, color: Colors.white),
                         Text(
                           widget.data[widget.index].bedrooms!,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 20),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 20),
                         ),
                       ],
                     ),
@@ -157,8 +136,8 @@ class _HouseItemHeroState extends State<HouseItemHero> {
                             color: Colors.white),
                         Text(
                           widget.data[widget.index].living_space!,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 20),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 20),
                         ),
                       ],
                     ),
@@ -176,8 +155,8 @@ class _HouseItemHeroState extends State<HouseItemHero> {
                             color: Colors.white),
                         Text(
                           widget.data[widget.index].plot_size!,
-                          style: const TextStyle(
-                              color: Colors.white, fontSize: 20),
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 20),
                         ),
                       ],
                     ),
@@ -196,14 +175,16 @@ class _HouseItemHeroState extends State<HouseItemHero> {
                   color: Colors.white),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 10),
-            child: Text(
-              widget.data[widget.index].description!,
-              style: const TextStyle(
-                  color: Colors.grey,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10),
+              child: Text(
+                widget.data[widget.index].description!,
+                style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
             ),
           ),
         ],

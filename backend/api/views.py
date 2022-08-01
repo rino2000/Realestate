@@ -1,7 +1,9 @@
 from rest_framework import serializers, generics
 from rest_framework.views import APIView
+from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
+from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models.functions import Cast
 from django.db.models import FloatField, Sum
@@ -13,7 +15,7 @@ from .models import Broker, House
 class HouseSerializer(serializers.ModelSerializer):
     class Meta:
         model = House
-        fields = '__all__'
+        exclude = ('image', 'slug')
 
 
 class HouseViewSet(generics.ListAPIView):
@@ -68,3 +70,15 @@ class LogoutBrokerAPI(APIView):
         self.request.user.auth_token.delete()
         logout(request)
         return Response('User successfully logged out')
+
+
+class CreateHouseAPI(APIView):
+    queryset = House.objects.all()
+    serializer_class = HouseSerializer
+
+    def post(self, request, format=None):
+        serializer = HouseSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

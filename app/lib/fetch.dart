@@ -21,7 +21,9 @@ Future<List<House>> fetchHouses() async {
 
 Future<Broker> fetchBroker() async {
   final sp = await SharedPreferences.getInstance();
+
   final token = sp.getString('token');
+
   final response = await http.get(
     Uri.parse('http://127.0.0.1:8000/api/broker/'),
     headers: {
@@ -37,7 +39,9 @@ Future<Broker> fetchBroker() async {
 
 Future<List<House>> fetchBrokerHouses() async {
   final sp = await SharedPreferences.getInstance();
+
   final token = sp.getString('token');
+
   final response = await http.get(
     Uri.parse('http://127.0.0.1:8000/api/broker/houses/'),
     headers: {
@@ -51,6 +55,41 @@ Future<List<House>> fetchBrokerHouses() async {
     return r;
   }
   return Future.error('Failed to load houses');
+}
+
+Future<bool> createHouse(House house) async {
+  final sp = await SharedPreferences.getInstance();
+
+  final token = sp.getString('token');
+
+  final response = await http.post(
+    Uri.parse('http://127.0.0.1:8000/api/house/create/'),
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      HttpHeaders.authorizationHeader: 'Token $token',
+    },
+    encoding: Encoding.getByName('utf-8'),
+    body: {
+      'title': house.title,
+      'price': house.price,
+      'bathrooms': house.bathrooms,
+      'bedrooms': house.bedrooms,
+      'living_space': house.living_space,
+      'plot_size': house.plot_size,
+      'description': house.description,
+      'city': house.city,
+      'country': house.country,
+      'created': house.created,
+      'plot': house.plot_size,
+      'broker': house.broker_id.toString(),
+    },
+  );
+  print(response.statusCode);
+
+  if (response.statusCode == 201) {
+    return true;
+  }
+  return false;
 }
 
 Future<Token> login(String? email, String? password) async {

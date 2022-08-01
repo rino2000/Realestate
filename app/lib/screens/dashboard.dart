@@ -1,9 +1,10 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, non_constant_identifier_names
 
 import 'package:app/screens/houseList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../fetch.dart';
@@ -22,9 +23,16 @@ class _DashboardState extends State<Dashboard> {
 
   late Future<List<House>> futureHouse;
 
+  late int brokerID;
+
   Future<bool?> removeBroker() async {
     final i = await SharedPreferences.getInstance();
     i.remove('broker');
+  }
+
+  Future<bool?> brokerId(int brokerid) async {
+    final i = await SharedPreferences.getInstance();
+    i.setInt('brokerId', brokerid);
   }
 
   @override
@@ -32,6 +40,12 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
     future = fetchBroker();
     futureHouse = fetchBrokerHouses();
+    future.then((value) {
+      setState(() {
+        brokerID = value.brokerData!.id!;
+        print(brokerId);
+      });
+    });
   }
 
   @override
@@ -63,8 +77,8 @@ class _DashboardState extends State<Dashboard> {
                           fontSize: 30, color: Colors.deepPurple),
                     );
                   }),
-              FutureBuilder<List<House>>(
-                  future: futureHouse,
+              StreamBuilder<List<House>>(
+                  stream: futureHouse.asStream(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
@@ -282,7 +296,7 @@ class _DashboardState extends State<Dashboard> {
                     onPressed: () => logoutDialog(context),
                     icon: const Icon(
                       Icons.logout_rounded,
-                      color: Colors.red,
+                      color: Colors.yellow,
                     ),
                     label: const Text(
                       "Logout",
@@ -290,6 +304,25 @@ class _DashboardState extends State<Dashboard> {
                     ),
                   ),
                 ],
+              ),
+              TextButton.icon(
+                onPressed: () {
+                  print("test");
+                  showCupertinoModalBottomSheet(
+                    expand: true,
+                    isDismissible: false,
+                    enableDrag: true,
+                    context: context,
+                    builder: (context) => CreateHouse(
+                      brokerID: brokerID,
+                    ),
+                  );
+                },
+                icon: const Icon(Icons.create_rounded, color: Colors.green),
+                label: const Text(
+                  "Create House",
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
             ],
           ),
@@ -363,6 +396,126 @@ class _DashboardState extends State<Dashboard> {
             child: const Text('Yes'),
           )
         ],
+      ),
+    );
+  }
+}
+
+class CreateHouse extends StatefulWidget {
+  final int brokerID;
+  const CreateHouse({Key? key, required this.brokerID}) : super(key: key);
+
+  @override
+  State<CreateHouse> createState() => _CreateHouseState();
+}
+
+class _CreateHouseState extends State<CreateHouse> {
+  late TextEditingController title_controller = TextEditingController();
+  late TextEditingController price_controller = TextEditingController();
+  late TextEditingController plot_controller = TextEditingController();
+  late TextEditingController bathrooms_controller = TextEditingController();
+  late TextEditingController bedrooms_controller = TextEditingController();
+  late TextEditingController living_space_controller = TextEditingController();
+  late TextEditingController plot_size_controller = TextEditingController();
+  late TextEditingController description_controller = TextEditingController();
+  late TextEditingController city_controller = TextEditingController();
+  late TextEditingController country_controller = TextEditingController();
+
+  final formkey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    title_controller.dispose();
+    price_controller.dispose();
+    plot_controller.dispose();
+    bathrooms_controller.dispose();
+    bedrooms_controller.dispose();
+    living_space_controller.dispose();
+    plot_size_controller.dispose();
+    description_controller.dispose();
+    city_controller.dispose();
+    country_controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          key: formkey,
+          child: Column(
+            children: [
+              const Text(
+                "Create House",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              CupertinoTextField(
+                  controller: title_controller, placeholder: "Title"),
+              CupertinoTextField(
+                  controller: price_controller, placeholder: "Price"),
+              CupertinoTextField(
+                  controller: bathrooms_controller, placeholder: "Bathrooms"),
+              CupertinoTextField(
+                  controller: bedrooms_controller, placeholder: "Bedrooms"),
+              CupertinoTextField(
+                  controller: living_space_controller,
+                  placeholder: "Livinspace"),
+              CupertinoTextField(
+                  controller: plot_size_controller, placeholder: "Plotsize"),
+              CupertinoTextField(
+                  controller: description_controller,
+                  placeholder: "Description"),
+              CupertinoTextField(
+                  controller: city_controller, placeholder: "City"),
+              CupertinoTextField(
+                  controller: country_controller, placeholder: "Country"),
+              TextButton.icon(
+                onPressed: () {
+                  if (formkey.currentState!.validate()) {
+                    House house = House(
+                      title: title_controller.text.trim(),
+                      price: price_controller.text.trim(),
+                      bathrooms: bathrooms_controller.text.trim(),
+                      bedrooms: bedrooms_controller.text.trim(),
+                      living_space: living_space_controller.text.trim(),
+                      plot: plot_size_controller.text.trim(),
+                      plot_size: plot_size_controller.text.trim(),
+                      description: description_controller.text.trim(),
+                      city: city_controller.text.trim(),
+                      country: country_controller.text.trim(),
+                      created: DateTime.now().toString(),
+                      broker_id: widget.brokerID,
+                    );
+
+                    createHouse(house).then(
+                      (bool value) => value
+                          ? Navigator.pop(context)
+                          : ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Center(
+                                  child: Text(
+                                    "Error while creating house",
+                                    style: TextStyle(fontSize: 30),
+                                  ),
+                                ),
+                                duration: Duration(seconds: 2),
+                              ),
+                            ),
+                    );
+                  }
+                },
+                icon: const Icon(Icons.create_rounded),
+                label: const Text("Create"),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -43,8 +43,8 @@ class _HouseListState extends State<HouseList> {
     return Scaffold(
       backgroundColor: Colors.black,
       extendBody: true,
-      body: FutureBuilder<List<House>>(
-        future: futureHouse,
+      body: StreamBuilder<List<House>>(
+        stream: futureHouse.asStream(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Center(child: Text('${snapshot.error}'));
