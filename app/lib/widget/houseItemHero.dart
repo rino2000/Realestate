@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import '../models/House.dart';
 
 class HouseItemHero extends StatefulWidget {
-  final List<House> data;
+  final List<House?> data;
   final int index;
   const HouseItemHero({Key? key, required this.data, required this.index})
       : super(key: key);
@@ -26,7 +26,7 @@ class _HouseItemHeroState extends State<HouseItemHero> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.black,
-        title: SelectableText(widget.data[widget.index].title!),
+        title: SelectableText(widget.data[widget.index]!.title!),
       ),
       backgroundColor: Colors.black,
       body: Column(
@@ -43,7 +43,7 @@ class _HouseItemHeroState extends State<HouseItemHero> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  widget.data[widget.index].title!,
+                  widget.data[widget.index]!.title!,
                   style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -51,7 +51,7 @@ class _HouseItemHeroState extends State<HouseItemHero> {
                 ),
                 Text(
                   NumberFormat.currency(locale: 'de_DE')
-                      .format(int.parse(widget.data[widget.index].price!))
+                      .format(int.parse(widget.data[widget.index]!.price!))
                       .toString(),
                   style: const TextStyle(
                       fontSize: 20,
@@ -70,7 +70,7 @@ class _HouseItemHeroState extends State<HouseItemHero> {
                   width: 5,
                 ),
                 Text(
-                  "${widget.data[widget.index].city!},${widget.data[widget.index].country}",
+                  "${widget.data[widget.index]!.city!},${widget.data[widget.index]!.country}",
                   style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -98,7 +98,7 @@ class _HouseItemHeroState extends State<HouseItemHero> {
                         const FaIcon(FontAwesomeIcons.shower,
                             color: Colors.white),
                         Text(
-                          widget.data[widget.index].bathrooms!,
+                          widget.data[widget.index]!.bathrooms!,
                           style:
                               const TextStyle(color: Colors.grey, fontSize: 20),
                         ),
@@ -116,7 +116,7 @@ class _HouseItemHeroState extends State<HouseItemHero> {
                       children: [
                         const FaIcon(FontAwesomeIcons.bed, color: Colors.white),
                         Text(
-                          widget.data[widget.index].bedrooms!,
+                          widget.data[widget.index]!.bedrooms!,
                           style:
                               const TextStyle(color: Colors.grey, fontSize: 20),
                         ),
@@ -135,7 +135,7 @@ class _HouseItemHeroState extends State<HouseItemHero> {
                         const FaIcon(FontAwesomeIcons.shower,
                             color: Colors.white),
                         Text(
-                          widget.data[widget.index].living_space!,
+                          widget.data[widget.index]!.living_space!,
                           style:
                               const TextStyle(color: Colors.grey, fontSize: 20),
                         ),
@@ -154,7 +154,7 @@ class _HouseItemHeroState extends State<HouseItemHero> {
                         const FaIcon(FontAwesomeIcons.house,
                             color: Colors.white),
                         Text(
-                          widget.data[widget.index].plot_size!,
+                          widget.data[widget.index]!.plot_size!,
                           style:
                               const TextStyle(color: Colors.grey, fontSize: 20),
                         ),
@@ -179,7 +179,7 @@ class _HouseItemHeroState extends State<HouseItemHero> {
             child: Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Text(
-                widget.data[widget.index].description!,
+                widget.data[widget.index]!.description!,
                 style: const TextStyle(
                     color: Colors.grey,
                     fontSize: 20,

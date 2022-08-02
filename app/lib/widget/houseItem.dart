@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import '../models/House.dart';
 
 class HouseItem extends StatefulWidget {
-  final List<House> data;
+  final List<House?>? data;
   final int index;
   const HouseItem({Key? key, required this.data, required this.index})
       : super(key: key);
@@ -53,7 +53,7 @@ class _HouseItemState extends State<HouseItem> {
             Padding(
               padding: const EdgeInsets.only(left: 10, top: 10),
               child: Text(
-                widget.data[widget.index].title!,
+                widget.data![widget.index]!.title!,
                 style: const TextStyle(fontSize: 20),
               ),
             ),
@@ -61,7 +61,7 @@ class _HouseItemState extends State<HouseItem> {
               padding: const EdgeInsets.only(left: 10),
               child: Text(
                 NumberFormat.currency(locale: 'de_DE')
-                    .format(int.parse(widget.data[widget.index].price!))
+                    .format(int.parse(widget.data![widget.index]!.price!))
                     .toString(),
                 style: TextStyle(
                     fontSize: 35,
@@ -74,9 +74,9 @@ class _HouseItemState extends State<HouseItem> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Icon(Icons.maps_home_work_outlined),
-                Text(widget.data[widget.index].city!),
+                Text(widget.data![widget.index]!.city!),
                 const FaIcon(FontAwesomeIcons.globe),
-                Text(widget.data[widget.index].country!),
+                Text(widget.data![widget.index]!.country!),
               ],
             ),
             const Divider(
@@ -88,13 +88,13 @@ class _HouseItemState extends State<HouseItem> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 const Icon(Icons.bed),
-                Text(widget.data[widget.index].bedrooms!),
+                Text(widget.data![widget.index]!.bedrooms!),
                 const Icon(Icons.bathtub_outlined),
-                Text(widget.data[widget.index].bathrooms!),
+                Text(widget.data![widget.index]!.bathrooms!),
                 const Icon(Icons.policy_sharp), //Living space
-                Text(widget.data[widget.index].living_space!),
+                Text(widget.data![widget.index]!.living_space!),
                 const Icon(Icons.space_bar_outlined), //Plot size
-                Text(widget.data[widget.index].plot_size!),
+                Text(widget.data![widget.index]!.plot_size!),
               ],
             ),
           ],

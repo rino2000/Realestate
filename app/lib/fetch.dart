@@ -10,7 +10,7 @@ import 'models/Broker.dart';
 import 'models/House.dart';
 import 'models/Token.dart';
 
-Future<List<House>> fetchHouses() async {
+Future<List<House>?> fetchHouses() async {
   final response = await http.get(Uri.parse('http://127.0.0.1:8000/api/data/'));
 
   if (response.statusCode == 200) {
@@ -39,7 +39,7 @@ Future<Broker> fetchBroker() async {
   return Future.error('Failed to load broker');
 }
 
-Future<List<House>> fetchBrokerHouses() async {
+Future<List<House?>> fetchBrokerHouses() async {
   final sp = await SharedPreferences.getInstance();
 
   final token = sp.getString('token');

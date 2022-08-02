@@ -22,7 +22,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   late Future<Broker> future;
 
-  late Future<List<House>> futureHouse;
+  late Future<List<House?>> futureHouse;
 
   late int brokerID;
 
@@ -78,7 +78,7 @@ class _DashboardState extends State<Dashboard> {
                           fontSize: 30, color: Colors.deepPurple),
                     );
                   }),
-              StreamBuilder<List<House>>(
+              StreamBuilder<List<House?>>(
                   stream: futureHouse.asStream(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -91,6 +91,9 @@ class _DashboardState extends State<Dashboard> {
                         snapshot.error.toString(),
                         style: const TextStyle(fontSize: 10, color: Colors.red),
                       );
+                    }
+                    if (snapshot.data!.isEmpty) {
+                      return const SizedBox(height: 0);
                     }
                     return Container(
                       height: 200,
@@ -169,27 +172,27 @@ class _DashboardState extends State<Dashboard> {
                                   DataRow(
                                     cells: <DataCell>[
                                       DataCell(
-                                          Text(snapshot.data![index].title!)),
+                                          Text(snapshot.data![index]!.title!)),
                                       DataCell(
                                         Text(
                                           "${NumberFormat.currency(locale: 'de_DE').format(double.parse(
-                                            snapshot.data![index].price!,
+                                            snapshot.data![index]!.price!,
                                           ))} €",
                                         ),
                                       ),
                                       DataCell(Text(
-                                          snapshot.data![index].plot_size!)),
+                                          snapshot.data![index]!.plot_size!)),
                                       DataCell(Text(
-                                          snapshot.data![index].bedrooms!)),
+                                          snapshot.data![index]!.bedrooms!)),
                                       DataCell(Text(
-                                          snapshot.data![index].bathrooms!)),
-                                      DataCell(Text(
-                                          snapshot.data![index].living_space!)),
+                                          snapshot.data![index]!.bathrooms!)),
                                       DataCell(Text(snapshot
-                                          .data![index].broker_id
+                                          .data![index]!.living_space!)),
+                                      DataCell(Text(snapshot
+                                          .data![index]!.broker_id
                                           .toString())),
-                                      DataCell(
-                                          Text(snapshot.data![index].created!)),
+                                      DataCell(Text(
+                                          snapshot.data![index]!.created!)),
                                       DataCell(IconButton(
                                         icon: const Icon(Icons.delete_outline,
                                             color: Colors.red),
@@ -223,9 +226,10 @@ class _DashboardState extends State<Dashboard> {
                       ),
                       child: Text(
                         "Total House Value \n${NumberFormat.currency(locale: 'de_DE').format(
-                          double.parse(
-                            snapshot.data!.value!.valueSum.toString(),
-                          ),
+                          double.tryParse(
+                                snapshot.data!.value!.valueSum.toString(),
+                              ) ??
+                              double.parse("0.00"),
                         )} €",
                         style: const TextStyle(
                           fontSize: 23,

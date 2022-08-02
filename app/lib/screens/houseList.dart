@@ -17,10 +17,10 @@ class HouseList extends StatefulWidget {
 }
 
 class _HouseListState extends State<HouseList> {
-  late Future<List<House>> futureHouse;
+  late Future<List<House?>?> futureHouse;
 
   int _selectedIndex = 0;
-  bool? isLoggedin = false;
+  bool isLoggedin = false;
 
   void _onItemTapped(int index) => setState(() => _selectedIndex = index);
 
@@ -29,11 +29,15 @@ class _HouseListState extends State<HouseList> {
     return i.containsKey('broker');
   }
 
+  void getLogin() =>
+      loginCheck().then((bool value) => setState(() => isLoggedin = value));
+
   @override
   void initState() {
     super.initState();
     futureHouse = fetchHouses();
-    loginCheck().then((value) => isLoggedin = value);
+    loginCheck();
+    getLogin();
   }
 
   @override
@@ -41,10 +45,10 @@ class _HouseListState extends State<HouseList> {
     return Scaffold(
       backgroundColor: Colors.black,
       extendBody: true,
-      body: FutureBuilder<List<House>>(
+      body: FutureBuilder<List<House?>?>(
         future: futureHouse,
         builder: (context, snapshot) {
-          if (snapshot.data!.isEmpty) {
+          if (snapshot.data?.isEmpty ?? false) {
             return const Center(
               child: Text(
                 'No houses available',
@@ -98,7 +102,7 @@ class _HouseListState extends State<HouseList> {
             icon: Icon(Icons.home),
             label: 'Houses',
           ),
-          isLoggedin!
+          isLoggedin
               ? BottomNavigationBarItem(
                   icon: IconButton(
                     icon: const Icon(Icons.dashboard_rounded),
