@@ -1,6 +1,6 @@
 from rest_framework import serializers, generics
 from rest_framework.views import APIView
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import DestroyAPIView
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import status
@@ -82,3 +82,8 @@ class CreateHouseAPI(APIView):
             serializer.save()
             return Response(status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteBrokerAPI(DestroyAPIView):
+    queryset = Broker.objects.all()
+    serializer_class = BrokerSerializer

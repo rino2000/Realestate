@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from rest_framework.authtoken import views
 
 from api.views import (HouseViewSet, BrokerView,
-                       BrokerHouseList, LogoutBrokerAPI, CreateHouseAPI)
+                       BrokerHouseList, LogoutBrokerAPI, CreateHouseAPI, DeleteBrokerAPI)
 from .views import (CreateHouse,
                     CreateBroker,
                     Dashboard,
@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/data/', HouseViewSet.as_view()),
     path('api/broker/', BrokerView.as_view()),
     path('api/broker/houses/', BrokerHouseList.as_view()),
+    path('api/broker/delete/<int:pk>/', DeleteBrokerAPI.as_view()),
     path('api/house/create/', CreateHouseAPI.as_view()),
     path('api/logout/', LogoutBrokerAPI.as_view(), name='logoutAPIBroker'),
     path('login/', Login.as_view(), name='login'),

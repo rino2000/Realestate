@@ -1,3 +1,5 @@
+// ignore_for_file: dead_code
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -84,12 +86,28 @@ Future<bool> createHouse(House house) async {
       'broker': house.broker_id.toString(),
     },
   );
-  print(response.statusCode);
 
   if (response.statusCode == 201) {
     return true;
+  } else {
+    return false;
   }
-  return false;
+}
+
+Future<bool> deleteBroker(String id) async {
+  final sp = await SharedPreferences.getInstance();
+
+  final token = sp.getString('token');
+
+  final response = await http.delete(
+    Uri.parse('http://127.0.0.1:8000/api/broker/delete/$id/'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader: 'Token $token',
+    },
+  );
+
+  return true ? response.statusCode == 204 : false;
 }
 
 Future<Token> login(String? email, String? password) async {

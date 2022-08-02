@@ -20,22 +20,20 @@ class _HouseListState extends State<HouseList> {
   late Future<List<House>> futureHouse;
 
   int _selectedIndex = 0;
-  bool isLoggedin = false;
+  bool? isLoggedin = false;
 
   void _onItemTapped(int index) => setState(() => _selectedIndex = index);
 
-  Future<void> loginCheck() async {
+  Future<bool> loginCheck() async {
     final i = await SharedPreferences.getInstance();
-    i.containsKey('broker')
-        ? setState(() => isLoggedin = true)
-        : setState(() => isLoggedin = false);
+    return i.containsKey('broker');
   }
 
   @override
   void initState() {
     super.initState();
     futureHouse = fetchHouses();
-    loginCheck();
+    loginCheck().then((value) => isLoggedin = value);
   }
 
   @override
@@ -43,34 +41,48 @@ class _HouseListState extends State<HouseList> {
     return Scaffold(
       backgroundColor: Colors.black,
       extendBody: true,
-      body: StreamBuilder<List<House>>(
-        stream: futureHouse.asStream(),
+      body: FutureBuilder<List<House>>(
+        future: futureHouse,
         builder: (context, snapshot) {
+          if (snapshot.data!.isEmpty) {
+            return const Center(
+              child: Text(
+                'No houses available',
+                style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.red,
+                ),
+              ),
+            );
+          }
           if (snapshot.hasError) {
             return Center(child: Text('${snapshot.error}'));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-              child: CircularProgressIndicator.adaptive(),
+              child: CircularProgressIndicator.adaptive(
+                  backgroundColor: Colors.red),
             );
           }
           return SizedBox(
             child: ListView.builder(
               itemCount: snapshot.data!.length,
-              itemBuilder: ((context, index) => Hero(
-                    tag: UniqueKey(),
-                    child: GestureDetector(
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute<void>(
-                          builder: (BuildContext context) => HouseItemHero(
-                            data: snapshot.data!,
-                            index: index,
-                          ),
+              itemBuilder: ((context, index) {
+                return Hero(
+                  tag: UniqueKey(),
+                  child: GestureDetector(
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (BuildContext context) => HouseItemHero(
+                          data: snapshot.data!,
+                          index: index,
                         ),
                       ),
-                      child: HouseItem(index: index, data: snapshot.data!),
                     ),
-                  )),
+                    child: HouseItem(index: index, data: snapshot.data!),
+                  ),
+                );
+              }),
             ),
           );
         },
@@ -86,17 +98,7 @@ class _HouseListState extends State<HouseList> {
             icon: Icon(Icons.home),
             label: 'Houses',
           ),
-          // BottomNavigationBarItem(
-          //   icon: IconButton(
-          //     icon: const Icon(Icons.dashboard_rounded),
-          //     onPressed: () => Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (context) => const Dashboard()),
-          //     ),
-          //   ),
-          //   label: 'Dashboard',
-          // ),
-          isLoggedin
+          isLoggedin!
               ? BottomNavigationBarItem(
                   icon: IconButton(
                     icon: const Icon(Icons.dashboard_rounded),
