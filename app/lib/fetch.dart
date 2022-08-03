@@ -110,6 +110,22 @@ Future<bool> deleteBroker(String id) async {
   return true ? response.statusCode == 204 : false;
 }
 
+Future<bool> deleteHouse(String id) async {
+  final sp = await SharedPreferences.getInstance();
+
+  final token = sp.getString('token');
+
+  final response = await http.delete(
+    Uri.parse('http://127.0.0.1:8000/api/house/delete/$id/'),
+    headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      HttpHeaders.authorizationHeader: 'Token $token',
+    },
+  );
+
+  return true ? response.statusCode == 204 : false;
+}
+
 Future<Token> login(String? email, String? password) async {
   final response = await http.post(
     Uri.parse('http://127.0.0.1:8000/api-token-auth/'),

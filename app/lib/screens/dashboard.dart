@@ -10,7 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../fetch.dart';
 import '../models/Broker.dart';
 import '../models/House.dart';
-import '../widget/createHouse.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -26,6 +25,19 @@ class _DashboardState extends State<Dashboard> {
 
   late int brokerID;
 
+  final formkey = GlobalKey<FormState>();
+
+  late TextEditingController title_controller = TextEditingController();
+  late TextEditingController price_controller = TextEditingController();
+  late TextEditingController plot_controller = TextEditingController();
+  late TextEditingController bathrooms_controller = TextEditingController();
+  late TextEditingController bedrooms_controller = TextEditingController();
+  late TextEditingController living_space_controller = TextEditingController();
+  late TextEditingController plot_size_controller = TextEditingController();
+  late TextEditingController description_controller = TextEditingController();
+  late TextEditingController city_controller = TextEditingController();
+  late TextEditingController country_controller = TextEditingController();
+
   Future<bool?> removeBroker() async {
     final i = await SharedPreferences.getInstance();
     i.remove('broker');
@@ -37,17 +49,32 @@ class _DashboardState extends State<Dashboard> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    title_controller.dispose();
+    price_controller.dispose();
+    plot_controller.dispose();
+    bathrooms_controller.dispose();
+    bedrooms_controller.dispose();
+    living_space_controller.dispose();
+    plot_size_controller.dispose();
+    description_controller.dispose();
+    city_controller.dispose();
+    country_controller.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     future = fetchBroker();
     futureHouse = fetchBrokerHouses();
-    future.then((value) {
-      setState(() {
-        brokerID = value.brokerData!.id!;
-        print(brokerId);
-      });
-    });
+    future.then((value) => setState(() => brokerID = value.brokerData!.id!));
   }
+
+  void fetch() => setState(() {
+        futureHouse = fetchBrokerHouses();
+        future = fetchBroker();
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +223,35 @@ class _DashboardState extends State<Dashboard> {
                                       DataCell(IconButton(
                                         icon: const Icon(Icons.delete_outline,
                                             color: Colors.red),
-                                        onPressed: () => print('delete house'),
+                                        onPressed: () {
+                                          deleteHouse(snapshot.data![index]!.id
+                                                  .toString())
+                                              .then((value) {
+                                            if (value) {
+                                              fetch();
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  backgroundColor: Colors.green,
+                                                  content: Text(
+                                                    "House succesfully deleted",
+                                                  ),
+                                                ),
+                                              );
+                                            } else {
+                                              fetch();
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  backgroundColor: Colors.red,
+                                                  content: Text(
+                                                    "Error while deleting house",
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          });
+                                        },
                                       )),
                                     ],
                                   ),
@@ -321,9 +376,103 @@ class _DashboardState extends State<Dashboard> {
                     isDismissible: false,
                     enableDrag: true,
                     context: context,
-                    builder: (context) => CreateHouse(
-                      brokerID: brokerID,
-                    ),
+                    builder: (context) {
+                      return Form(
+                        key: formkey,
+                        child: Column(
+                          children: [
+                            const Text(
+                              "Create House",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            CupertinoTextField(
+                                controller: title_controller,
+                                placeholder: "Title"),
+                            CupertinoTextField(
+                                controller: price_controller,
+                                placeholder: "Price"),
+                            CupertinoTextField(
+                                controller: bathrooms_controller,
+                                placeholder: "Bathrooms"),
+                            CupertinoTextField(
+                                controller: bedrooms_controller,
+                                placeholder: "Bedrooms"),
+                            CupertinoTextField(
+                                controller: living_space_controller,
+                                placeholder: "Livinspace"),
+                            CupertinoTextField(
+                                controller: plot_size_controller,
+                                placeholder: "Plotsize"),
+                            CupertinoTextField(
+                                controller: description_controller,
+                                placeholder: "Description"),
+                            CupertinoTextField(
+                                controller: city_controller,
+                                placeholder: "City"),
+                            CupertinoTextField(
+                                controller: country_controller,
+                                placeholder: "Country"),
+                            TextButton.icon(
+                              onPressed: () {
+                                if (formkey.currentState!.validate()) {
+                                  House house = House(
+                                    title: title_controller.text.trim(),
+                                    price: price_controller.text.trim(),
+                                    bathrooms: bathrooms_controller.text.trim(),
+                                    bedrooms: bedrooms_controller.text.trim(),
+                                    living_space:
+                                        living_space_controller.text.trim(),
+                                    plot: plot_size_controller.text.trim(),
+                                    plot_size: plot_size_controller.text.trim(),
+                                    description:
+                                        description_controller.text.trim(),
+                                    city: city_controller.text.trim(),
+                                    country: country_controller.text.trim(),
+                                    created: DateTime.now().toString(),
+                                    broker_id: brokerID,
+                                  );
+
+                                  createHouse(house).then(
+                                    (bool value) {
+                                      if (value) {
+                                        fetch();
+                                        Navigator.pop(context);
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            backgroundColor: Colors.green,
+                                            content: Text(
+                                              "House succesfully created",
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        fetch();
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            backgroundColor: Colors.red,
+                                            content: Text(
+                                              "Error while craeting house",
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                  );
+                                }
+                              },
+                              icon: const Icon(Icons.create_rounded),
+                              label: const Text("Create"),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
                   );
                 },
                 icon: const Icon(Icons.create_rounded, color: Colors.green),

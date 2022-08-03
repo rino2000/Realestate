@@ -32,6 +32,10 @@ class _HouseListState extends State<HouseList> {
   void getLogin() =>
       loginCheck().then((bool value) => setState(() => isLoggedin = value));
 
+  void fetch() {
+    futureHouse = fetchHouses();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -45,8 +49,8 @@ class _HouseListState extends State<HouseList> {
     return Scaffold(
       backgroundColor: Colors.black,
       extendBody: true,
-      body: FutureBuilder<List<House?>?>(
-        future: futureHouse,
+      body: StreamBuilder<List<House?>?>(
+        stream: futureHouse.asStream(),
         builder: (context, snapshot) {
           if (snapshot.data?.isEmpty ?? false) {
             return const Center(
@@ -98,9 +102,14 @@ class _HouseListState extends State<HouseList> {
         selectedItemColor: Colors.purple,
         onTap: _onItemTapped,
         items: <BottomNavigationBarItem>[
-          const BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Houses',
+          BottomNavigationBarItem(
+            icon: IconButton(
+              icon: const Icon(Icons.home_outlined),
+              onPressed: () => setState(
+                () => fetch(),
+              ),
+            ),
+            label: "Home",
           ),
           isLoggedin
               ? BottomNavigationBarItem(
